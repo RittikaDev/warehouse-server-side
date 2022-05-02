@@ -26,13 +26,6 @@ async function run(req, res) {
     console.log("Mongo running");
 
     // Load All Items
-    // app.get("/items", async (req, res) => {
-    //   const query = {};
-    //   const cursor = itemCollection.find(query);
-    //   const items = await cursor.toArray();
-    //   res.send(items);
-    // });
-    // search based on email
     app.get("/items", async (req, res) => {
       const email = req.query.email;
       console.log(email);
