@@ -26,11 +26,27 @@ async function run(req, res) {
     console.log("Mongo running");
 
     // Load All Items
+    // app.get("/items", async (req, res) => {
+    //   const query = {};
+    //   const cursor = itemCollection.find(query);
+    //   const items = await cursor.toArray();
+    //   res.send(items);
+    // });
+    // search based on email
     app.get("/items", async (req, res) => {
-      const query = {};
-      const cursor = itemCollection.find(query);
-      const items = await cursor.toArray();
-      res.send(items);
+      const email = req.query.email;
+      console.log(email);
+      if (email) {
+        const query = { email: email };
+        const cursor = itemCollection.find(query);
+        const items = await cursor.toArray();
+        res.send(items);
+      } else {
+        const query = {};
+        const cursor = itemCollection.find(query);
+        const items = await cursor.toArray();
+        res.send(items);
+      }
     });
 
     // Dynamic load data
@@ -67,6 +83,21 @@ async function run(req, res) {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await itemCollection.deleteOne(query);
+      res.send(result);
+      // console.log(result);
+    });
+
+    // Add New Item
+    // app.post("/items", async (req, res) => {
+    //   const newItem = req.body;
+    //   const result = await itemCollection.insertOne(newItem);
+    //   res.send(result);
+    //   console.log(result);
+    // });
+
+    app.post("/items", async (req, res) => {
+      const newItem = req.body;
+      const result = await itemCollection.insertOne(newItem);
       res.send(result);
       console.log(result);
     });
