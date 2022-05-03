@@ -46,7 +46,7 @@ async function run(req, res) {
     app.post("/login", (req, res) => {
       const user = req.body;
       const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: "1d",
+        expiresIn: "30d",
       });
       res.send({ accessToken });
     });
@@ -81,11 +81,30 @@ async function run(req, res) {
       //   //   res.status(403).send({ message: "Access Denied" });
       //   // }
       // } else {
+      console.log(req.query);
+      const page = parseInt(req.query.page);
+      const size = parseInt(req.query.size);
       const query = {};
       const cursor = itemCollection.find(query);
-      const items = await cursor.toArray();
+      let items;
+      if (page || size) {
+        items = await cursor
+          .skip(page * size)
+          .limit(size)
+          .toArray();
+      } else {
+        items = await cursor.toArray();
+      }
       res.send(items);
       // }
+    });
+
+    // pagination
+    app.get("/itemcount", async (req, res) => {
+      // const query = {};
+      // const cursor = itemCollection.find(query);
+      const count = await itemCollection.estimatedDocumentCount();
+      res.send({ count });
     });
 
     // Dynamic load data
