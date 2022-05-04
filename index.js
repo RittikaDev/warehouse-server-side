@@ -25,7 +25,7 @@ function verify(req, res, next) {
     req.decoded = decoded;
     next();
   });
-  console.log("indise verify", authHeader);
+  // console.log("indise verify", authHeader);
 }
 
 // Mongo Connect
@@ -46,7 +46,7 @@ async function run(req, res) {
     app.post("/login", (req, res) => {
       const user = req.body;
       const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: "30d",
+        expiresIn: "1d",
       });
       res.send({ accessToken });
     });
@@ -81,7 +81,7 @@ async function run(req, res) {
       //   //   res.status(403).send({ message: "Access Denied" });
       //   // }
       // } else {
-      console.log(req.query);
+      // console.log(req.query);
       const page = parseInt(req.query.page);
       const size = parseInt(req.query.size);
       const query = {};
@@ -119,7 +119,7 @@ async function run(req, res) {
     app.put("/inventory/:id", async (req, res) => {
       const id = req.params.id;
       const updatedUser = req.body;
-      console.log(updatedUser);
+      // console.log(updatedUser);
       const filter = { _id: ObjectId(id) };
       const options = { upsert: true };
       const updatedDoc = {
@@ -133,7 +133,7 @@ async function run(req, res) {
         options
       );
       res.send(result);
-      console.log(result);
+      // console.log(result);
     });
 
     // Delete an item
@@ -150,7 +150,7 @@ async function run(req, res) {
       const newItem = req.body;
       const result = await itemCollection.insertOne(newItem);
       res.send(result);
-      console.log(result);
+      // console.log(result);
     });
   } finally {
   }
