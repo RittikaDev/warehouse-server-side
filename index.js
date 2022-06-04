@@ -41,7 +41,7 @@ async function run(req, res) {
   try {
     await client.connect();
     const itemCollection = client.db("warehouseManagement").collection("items");
-    console.log("Mongo running");
+    console.log("MongoDB running");
 
     app.post("/login", (req, res) => {
       const user = req.body;
